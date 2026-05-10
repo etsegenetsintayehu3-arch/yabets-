@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="Gemini_Generated_Image_hb2j0dhb2j0dhb2j.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Focus Time | Deep Work</title>
+  <style>
+    :root {
+      --primary: #a29bfe;
+      --accent: #00ff88;
+      --bg: #0f0c29;
+      --glass: rgba(255, 255, 255, 0.08);
+      --glass-border: rgba(255, 255, 255, 0.15);
+      --text: #ffffff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* --- Navigation --- */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 25px 8%;
+      backdrop-filter: blur(10px);
+    }
+
+    .logo {
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+      background: linear-gradient(to right, #fff, var(--primary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .sign-in {
+      padding: 10px 24px;
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      background: var(--glass);
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .sign-in:hover {
+      background: white;
+      color: var(--bg);
+    }
+
+    /* --- Main UI --- */
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: var(--glass);
+      backdrop-filter: blur(25px);
+      border: 1px solid var(--glass-border);
+      padding: 50px;
+      border-radius: 32px;
+      width: 100%;
+      max-width: 550px;
+      text-align: center;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .hook {
+      color: #b2bec3;
+      margin-bottom: 40px;
+      font-size: 1rem;
+    }
+
+    /* --- Timer Visualization --- */
+    .timer-circle {
+      position: relative;
+      width: 220px;
+      height: 220px;
+      margin: 0 auto 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .timer-svg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+
+    .timer-svg circle {
+      fill: none;
+      stroke-width: 8;
+      stroke-linecap: round;
+    }
+
+    .circle-bg { stroke: var(--glass-border); }
+    .circle-progress {
+      stroke: var(--accent);
+      stroke-dasharray: 628;
+      stroke-dashoffset: 0;
+      transition: stroke-dashoffset 1s linear;
+    }
+
+    .timer {
+      font-size: 3.5rem;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* --- Controls --- */
+    .controls {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+
+    .btn {
+      padding: 15px 30px;
+      border: none;
+      border-radius: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s, opacity 0.2s;
+    }
+
+    .btn-primary { background: var(--accent); color: #000; }
+    .btn-secondary { background: var(--glass); color: #fff; border: 1px solid var(--glass-border); }
+    .btn:hover { transform: translateY(-2px); opacity: 0.9; }
+    .btn:active { transform: translateY(0); }
+
+    /* --- Task System --- */
+    .input-group {
+      display: flex;
+      background: rgba(0,0,0,0.2);
+      padding: 8px;
+      border-radius: 16px;
+      margin-bottom: 25px;
+      border: 1px solid var(--glass-border);
+    }
+
+    input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      padding: 12px 15px;
+      color: white;
+      outline: none;
+      font-size: 1rem;
+    }
+
+    .task-item {
+      background: var(--glass);
+      padding: 15px 20px;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .delete-task {
+      color: #ff7675;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    footer {
+      padding: 30px;
+      text-align: center;
+      font-size: 0.9rem;
+      opacity: 0.5;
+    }
+
+    @media (max-width: 500px) {
+      .container { padding: 30px 20px; }
+      .timer { font-size: 2.8rem; }
+      .controls { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">FOCUS // TIME</div>
+    <button class="sign-in">Dashboard</button>
+  </header>
+
+  <main>
+    <div class="container">
+      <h1>Deep Work</h1>
+      <p class="hook">Uninterrupted focus session</p>
+
+      <div class="timer-circle">
+        <svg class="timer-svg" viewBox="0 0 210 210">
+          <circle class="circle-bg" cx="105" cy="105" r="100"></circle>
+          <circle id="progressRing" class="circle-progress" cx="105" cy="105" r="100"></circle>
+        </svg>
+        <div class="timer" id="timer">25:00</div>
+      </div>
+
+      <div class="controls">
+        <button class="btn btn-primary" id="startBtn">Start Session</button>
+        <button class="btn btn-secondary" id="pauseBtn" style="display:none;">Pause</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <form id="studyForm" class="input-group">
+        <input type="text" id="subject" placeholder="What are you working on?" required />
+        <button type="submit" class="btn btn-primary" style="padding: 10px 20px;">Add</button>
+      </form>
+
+      <div id="taskList"></div>
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2026 Yabets | Engineered for Productivity
+  </footer>
+
+  <script>
+    // Timer Logic
+    let timer;
+    let timeLeft = 25 * 60;
+    const totalTime = 25 * 60;
+    let isRunning = false;
+
+    const timerDisplay = document.getElementById('timer');
+    const startBtn = document.getElementById('startBtn');
+    const pauseBtn = document.getElementById('pauseBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const progressRing = document.getElementById('progressRing');
+    const taskList = document.getElementById('taskList');
+    const form = document.getElementById('studyForm');
+    const subjectInput = document.getElementById('subject');
+
+    function updateTimerUI() {
+      const minutes = Math.floor(timeLeft / 60);
+      const seconds = timeLeft % 60;
+      timerDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      
+      // Update Circular Progress
+      const offset = 628 - (timeLeft / totalTime) * 628;
+      progressRing.style.strokeDashoffset = offset;
+    }
+
+    function startTimer() {
+      if (!isRunning) {
+        isRunning = true;
+        startBtn.style.display = 'none';
+        pauseBtn.style.display = 'inline-block';
+        
+        timer = setInterval(() => {
+          if (timeLeft > 0) {
+            timeLeft--;
+            updateTimerUI();
+          } else {
+            clearInterval(timer);
+            isRunning = false;
+            alert('Session complete! Time to recharge.');
+            resetTimer();
+          }
+        }, 1000);
+      }
+    }
+
+    function pauseTimer() {
+      clearInterval(timer);
+      isRunning = false;
+      startBtn.style.display = 'inline-block';
+      pauseBtn.style.display = 'none';
+      startBtn.textContent = 'Resume';
+    }
+
+    function resetTimer() {
+      clearInterval(timer);
+      isRunning = false;
+      timeLeft = totalTime;
+      updateTimerUI();
+      startBtn.style.display = 'inline-block';
+      pauseBtn.style.display = 'none';
+      startBtn.textContent = 'Start Session';
+    }
+
+    // Task Management
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const taskText = subjectInput.value.trim();
+      if (taskText) {
+        const div = document.createElement('div');
+        div.className = 'task-item';
+        div.innerHTML = `
+          <span>${taskText}</span>
+          <span class="delete-task" onclick="this.parentElement.remove()">✕</span>
+        `;
+        taskList.prepend(div);
+        subjectInput.value = '';
+      }
+    });
+
+    startBtn.addEventListener('click', startTimer);
+    pauseBtn.addEventListener('click', pauseTimer);
+    resetBtn.addEventListener('click', resetTimer);
+
+    // Initial Load
+    updateTimerUI();
+  </script>
+</body>
+</html>
